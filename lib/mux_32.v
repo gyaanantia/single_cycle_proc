@@ -1,6 +1,6 @@
 module mux_32 (sel, src0, src1, z);
   
-  input [31:0] sel;
+  input sel; // MODIFIED BY CAM
   input [31:0] src0;
   input [31:0] src1;
   output reg [31:0] z;
