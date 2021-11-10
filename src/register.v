@@ -1,6 +1,6 @@
 // A single 32-bit register
 
-module register(clk, areset, aload, adata, data_in,write_enable, data_out);
+module register(clk, areset, aload, adata, data_in, write_enable, data_out);
 
 input clk;
 input areset;
