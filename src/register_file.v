@@ -22,7 +22,9 @@ wire [31:0] output_wires[31:0];
 // We need to figure out how to map this to the proper input wire index...
 // Essentially just do input_wires[write_reg] = write_data
 
-mux_32 write_enable_mux_(.sel(write_enable), .src0(32'h0), .src1(write_data), .z(input_wires[write_reg]))
+wire [31:0] preserve;
+mux_32t1_32_arr write_preserve_mux_1_(.sel(write_reg), .in_arr(output_wires), .out(preserve));
+mux_32 write_enable_mux_(.sel(write_enable), .src0(preserve), .src1(write_data), .z(input_wires[write_reg]));
 
 // generate the bank of registers
 // setting async reset, load and data to GND/0 until we want to implement that functionality
@@ -43,7 +45,7 @@ mux_32t1_32_arr read_sel_mux_1_(.sel(read_reg1), .in_arr(output_wires), .out(rea
 mux_32t1_32_arr read_sel_mux_2_(.sel(read_reg2), .in_arr(output_wires), .out(read_data2));
 
 
-
+endmodule
 
 
 
