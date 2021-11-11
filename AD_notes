@@ -8,6 +8,8 @@ Appendix A has all of the opcodes spelled out for each of the instructions we ne
 
 Figure 4.12 on p. 260 has a table with the control signals for most of the instructions we need, but some are missing.
 
+p. 253 has the diagram of the registers.
+Do we need to declare the clock as a register in Verilog?
 
 Pieces we have:
 Sign extender (done and checked)
