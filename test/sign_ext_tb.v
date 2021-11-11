@@ -19,5 +19,4 @@ module sign_ext_tb;
         $finish;
     end
 
-    //always #5 clk = ~clk;
 endmodule
