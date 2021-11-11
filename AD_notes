@@ -1,4 +1,4 @@
-AD notes, 11.9.32:
+AD notes:
 Information about setting up control logic from a TT (appendix D from text, which is not in the print book): 
 https://www.cs.colostate.edu/~malaiya/470/Appendix-D.pdf
 
@@ -10,17 +10,21 @@ Figure 4.12 on p. 260 has a table with the control signals for most of the instr
 
 
 Pieces we have:
-ALU
+Sign extender (done and checked)
+Single register (done and checked)
+ALU (badly documented one from class; also handles the addition for the PC, etc)
 Mux
 RAM (SRAM? DRAM?)
 D-flip-flops
 
 
 What we need to make:
-Register file (schematic on B-55; need to make registers; mux connections look tricky; recommend I start with this)
+PC (just a single register)
+Register file (schematic on B-55, in progress)
 Data memory (from RAM)
 Instruction memory (from RAM)
-Sign extender (should be pretty simple)
 Control Circuit (recommend we do last)
 
+MIPS register file convention is on p. 105 in text
+The PC is just a register, and we have a working version. 
 
