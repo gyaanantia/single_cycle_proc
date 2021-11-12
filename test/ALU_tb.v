@@ -18,30 +18,84 @@ module ALU_tb;
     );
 
     initial begin
-        // based on a couple slides I found online, this should be AND
+        shamt = 5'b00100;
+        // AND!
         ctrl = 0;
         A = 32'hAAAAAAAA;
         B = 32'hFFFFFFFF;
         shamt = 0;
         #5
-        // this should be OR
-        ctrl = 1;
+        A = 32'h24624702;
         #5
-        // ADD
+        A = 32'hFA0693D7;
+        B = 32'h01100011;
+        #5
+        A = 32'h00000000;
+        B = 32'hFFFFFF0;
+        #5
+        // OR!
+        ctrl = 1;
+        A = 32'h59871359;
+        B = 0;
+        #5
+        B = 32'h6137FFFF;
+        #5
+        B = 32'hBADF00DE;
+        #5
+        B = 100;
+        #5
+        A = 0;
+        B = 0;
+        #5
+        A = 1;
+        B = 1;
+        #5
+        // ADD!
         A = -1;
         B = 1;
         ctrl = 2;
         #5
-        // not sure
+        A = 32'h139876AD;
+        B = 1;
+        #5
+        A = 24;
+        B = 20984;
+        #5
+        A = 1;
+        B = 1;
+        #5
+        A = 32'hFFFFFFFF;
+        B = 32'hFFFFFFFF;
+        #5
+        A = 32'b01000000000000000000000000000000;
+        B = 32'b01000000000000000000000000000000;
+        #5
+        A = 32'b10000000000000000000000000000000;
+        B = 32'b10000000000000000000000000000000;
+        #5
+        // slt_signed
         ctrl = 3;
         A = 1;
+        B = 32'h00010200;
+        #5
         A = 32'h00010000;
+        #5
+        B = 32'h60982375;
+        #5
+        A = 32'h80956829;
+        #5
         shamt = 5;
         #5
-        // or?
+        A = 32'hFFFFFFFF;
+        B = 32'h00000000;
+        #5
+        B = 32'h00FF00F0;
+        #5
+        // add_unsigned
         ctrl = 4;
         #5
-        // left shift
+        A = 32'hF0F0F0F0;
+        // sll
         ctrl = 5;
         #5
         // SUB
