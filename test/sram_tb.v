@@ -9,8 +9,8 @@ module sram_tb;
   
   
   
-  sram sram_ut(.cs(t_cs) , .oe(t_oe) , .we(t_we) , .addr(t_addr) , .din(t_din) , .dout(t_dout));
-  defparam sram_ut.mem_file = "data/bills_branch.dat";
+  sram #(.mem_file("data/bills_branch.dat")) sram_ut(.cs(t_cs) , .oe(t_oe) , .we(t_we) , .addr(t_addr) , .din(t_din) , .dout(t_dout));
+  //defparam sram_ut.mem_file = "data/bills_branch.dat";
   
   initial
     begin

@@ -68,6 +68,22 @@ module syncram_tb;
       t_we = 1'b1;
       t_addr = 32'h10000024;
       t_din = 32'h00000007;
+
+      #10 // AD add - check read after write
+      t_clk = 1'b1;
+      t_cs = 1'b1;
+      t_oe = 1'b1;
+      t_we = 1'b1;
+      t_addr = 32'h10000024;
+      t_din = 32'h00000007;
+      
+      #10
+      t_clk = 1'b0;
+      t_cs = 1'b1;
+      t_oe = 1'b1;
+      t_we = 1'b1;
+      t_addr = 32'h10000024;
+      t_din = 32'h00000007;
       
       #10
       t_clk = 1'b1;

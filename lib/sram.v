@@ -1,6 +1,6 @@
 module sram(cs,oe,we,addr,din,dout);
   
-  parameter mem_file;
+  parameter mem_file = "data/bills_branch.dat";
   input cs;
   input oe;
   input we;

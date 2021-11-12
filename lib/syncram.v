@@ -1,6 +1,6 @@
 module syncram(clk,cs,oe,we,addr,din,dout);
   
-  parameter mem_file;
+  parameter mem_file = "data/bills_branch.dat";
   input clk;
   input cs;
   input oe;
