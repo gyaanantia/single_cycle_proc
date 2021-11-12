@@ -3,6 +3,7 @@
 
 module alu_tb;
   
+    reg [2:0] ctrl;
     reg [31:0] A;
     reg [31:0] B;
     reg [3:0] SELECT;
@@ -12,7 +13,7 @@ module alu_tb;
     wire ZERO_FLAG;
     wire [31:0] RESULT;
   
-    alu ALU(A, B, SELECT, CARRY_OUT, OVERFLOW, ZERO_FLAG, RESULT);
+    ALU test(ctrl, A, B, SELECT, CARRY_OUT, OVERFLOW, ZERO_FLAG, RESULT);
   
     initial
         begin

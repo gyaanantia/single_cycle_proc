@@ -1,3 +1,5 @@
+`timescale 1ns/10ps
+
 module ALUCU(ALUOp, func, ALUCtr);
     
     input [2:0] ALUOp;
