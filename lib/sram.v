@@ -1,3 +1,5 @@
+`timescale 1ns/10ps
+
 module sram(cs,oe,we,addr,din,dout);
   
   parameter mem_file = "data/bills_branch.dat";

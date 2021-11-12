@@ -1,3 +1,5 @@
+`timescale 1ns/10ps
+
 module sram_tb;
   
   reg t_cs;
