@@ -1,0 +1,68 @@
+xrun(64): 18.09-s011: (c) Copyright 1995-2019 Cadence Design Systems, Inc.
+TOOL:	xrun(64)	18.09-s011: Started on Nov 07, 2021 at 17:17:14 CST
+xrun
+	-64bit
+	-gui
+	-access r
+	test/alu_tb.v
+	test/alu_1b_tb.v
+	src/alu_1b.v
+	src/add_1b.v
+	src/add.v
+	src/alu.v
+	src/mux_8t1_32.v
+	src/mux_8t1.v
+	src/sll.v
+	src/slt.v
+	src/sub.v
+	src/sub_1b.v
+	src/srl.v
+	lib/and_gate_32.v
+	lib/and_gate.v
+	lib/mux_32.v
+	lib/mux.v
+	lib/nor_gate.v
+	lib/not_gate_32.v
+	lib/not_gate.v
+	lib/or_gate_32.v
+	lib/or_gate.v
+	lib/xor_gate_32.v
+	lib/xor_gate.v
+	lib/nand_gate.v
+Recompiling... reason: file './src/add.v' is newer than expected.
+	expected: Sat Nov  6 23:54:48 2021
+	actual:   Sat Nov  6 23:58:25 2021
+		Caching library 'worklib' ....... Done
+	Elaborating the design hierarchy:
+	Top level design units:
+		alu_tb
+		alu_1b_tb
+		sub
+	Building instance overlay tables: .................... Done
+	Building instance specific data structures.
+	Loading native compiled code:     .................... Done
+	Design hierarchy summary:
+		                  Instances  Unique
+		Modules:               1709      25
+		Registers:              565       8
+		Scalar wires:          1647       -
+		Expanded wires:         390      15
+		Vectored wires:           3       -
+		Always blocks:          559       2
+		Initial blocks:           2       2
+		Cont. assignments:       14      34
+		Pseudo assignments:       2       2
+		Simulation timescale:  10ps
+	Writing initial simulation snapshot: worklib.alu_tb:v
+
+-------------------------------------
+Relinquished control to SimVision...
+xcelium> 
+xcelium> source /vol/cadence2018/XCELIUM1809/tools/xcelium/files/xmsimrc
+xcelium> database -open waves -into waves.shm -default
+Created default SHM database waves
+xcelium> probe -create -shm alu_tb.A alu_tb.B alu_tb.CARRY_OUT alu_tb.OVERFLOW alu_tb.RESULT alu_tb.SELECT alu_tb.ZERO_FLAG
+Created probe 1
+xcelium> run
+xmsim: *W,RNQUIE: Simulation is complete.
+xcelium> TOOL:	xrun(64)	18.09-s011: Exiting on Nov 07, 2021 at 17:19:38 CST  (total: 00:02:24)
