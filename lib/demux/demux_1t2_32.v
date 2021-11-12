@@ -1,5 +1,5 @@
 // 32-bit 1-to-2 demux
-module demux_1t2(s, d, y0, y1);
+module demux_1t2_32(s, d, y0, y1);
 
 input s;
 input [31:0] d;

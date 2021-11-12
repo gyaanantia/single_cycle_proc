@@ -7,7 +7,7 @@ output wire y0, y1;
 
 wire not_s;
 
-not_gate not_s(.x(s), .z(not_s));
+not_gate not_s_(.x(s), .z(not_s));
 and_gate nsAd_(.x(not_s), .y(d), .z(y0));
 and_gate sAd_(.x(s), .y(d), .z(y1));
 
