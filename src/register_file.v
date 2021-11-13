@@ -24,11 +24,11 @@ wire [31:0] output_wires[31:0];
 
 wire [31:0] decoder_out;
 wire [31:0] decoder_and_we;
-dec_5 dec_(.src(write_reg), .z(decoder_out));
+gac_dec_5 dec_(.src(write_reg), .z(decoder_out));
 genvar k;
 generate
     for (k = 0; k < 32; k = k + 1) begin
-        and_gate and_dec_we_(.x(write_enable), .y(decoder_out[k]), .z(decoder_and_we[k]));
+        gac_and_gate and_dec_we_(.x(write_enable), .y(decoder_out[k]), .z(decoder_and_we[k]));
     end
 endgenerate
 
@@ -44,7 +44,7 @@ endgenerate
 
 // These two muxes handle selecting which registers we are reading from
 
-mux_32t1_32 read_sel_mux_1_(.sel(read_reg1), 
+gac_mux_32t1_32 read_sel_mux_1_(.sel(read_reg1), 
 .x0(32'h0), 
 .x1(output_wires[1]), 
 .x2(output_wires[2]), 
@@ -78,7 +78,7 @@ mux_32t1_32 read_sel_mux_1_(.sel(read_reg1),
 .x1E(output_wires[30]), 
 .x1F(output_wires[31]), 
 .q(read_data1));
-mux_32t1_32 read_sel_mux_2_(.sel(read_reg2), 
+gac_mux_32t1_32 read_sel_mux_2_(.sel(read_reg2), 
 .x0(32'h0), 
 .x1(output_wires[1]), 
 .x2(output_wires[2]), 

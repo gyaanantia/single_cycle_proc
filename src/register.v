@@ -14,7 +14,7 @@ output wire [31:0] data_out;
 genvar i;
 generate
     for(i = 0; i < 32; i = i + 1) begin
-        dffr_a flipflop_(.clk(clk), 
+        gac_dffr_a flipflop_(.clk(clk), 
                         .arst(areset), 
                         .aload(aload), 
                         .adata(adata[i]), 
