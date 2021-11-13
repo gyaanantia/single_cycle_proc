@@ -2,7 +2,7 @@
 module demux_1t4_32 (s, d, y_arr);
 
 input [1:0] s;
-input [31:0] d;
+input wire [31:0] d;
 output wire [31:0] y_arr[3:0];
 
 wire [31:0] dm_y0, dm_y1;

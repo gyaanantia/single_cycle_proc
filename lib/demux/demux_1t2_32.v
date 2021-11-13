@@ -2,7 +2,7 @@
 module demux_1t2_32(s, d, y0, y1);
 
 input s;
-input [31:0] d;
+input wire [31:0] d;
 output wire [31:0] y0, y1;
 
 genvar i;
