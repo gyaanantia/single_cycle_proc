@@ -16,10 +16,10 @@ mux_8t1_32 mux_2_(.x0(x10), .x1(x11), .x2(x12), .x3(x13), .x4(x14), .x5(x15), .x
 mux_8t1_32 mux_3_(.x0(x18), .x1(x19), .x2(x1A), .x3(x1B), .x4(x1C), .x5(x1D), .x6(x1E), .x7(x1F), .sel(sel[2:0]), .q(q3));
 
 // second layer
-mux_32 mux_4_(.sel(sel[3]), .src0(q0), .src1(q1), .q(q10));
-mux_32 mux_5_(.sel(sel[3]), .src0(q2), .src1(q3), .q(q11));
+mux_32 mux_4_(.sel(sel[3]), .src0(q0), .src1(q1), .z(q10));
+mux_32 mux_5_(.sel(sel[3]), .src0(q2), .src1(q3), .z(q11));
 
 // third layer
-mux_32 mux_6_(.sel(sel[4]), .src0(q10), .src1(q11), .q(q));
+mux_32 mux_6_(.sel(sel[4]), .src0(q10), .src1(q11), .z(q));
 
 endmodule

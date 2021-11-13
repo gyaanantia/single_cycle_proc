@@ -21,8 +21,8 @@ register_file test(
 
 initial begin
     clk = 0;
-    read_reg1 = 5'h0;
-    read_reg2 = 5'h0;
+    read_reg1 = 5'h3;
+    read_reg2 = 5'h2;
     write_reg = 5'h2;
     write_data = 32'hFFFFFFFF;
     write_enable = 1'b1;
@@ -36,6 +36,10 @@ initial begin
     write_enable = 1'b0;
     write_data = 32'h03;
 
+    #10
+    read_reg1 = 5'h0;
+    write_enable = 1'b0;
+    write_data = 32'h03;
     #30
     $finish;
 end

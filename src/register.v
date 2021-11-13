@@ -24,6 +24,4 @@ generate
     end
 endgenerate
 
-
-
 endmodule

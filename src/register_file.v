@@ -41,14 +41,11 @@ generate
     end
 endgenerate
 
-// this is the zero register, so just putting this after the for loop to ensure 0s are written to it.
-
-assign output_wires[0] = 32'h0;     
 
 // These two muxes handle selecting which registers we are reading from
 
 mux_32t1_32 read_sel_mux_1_(.sel(read_reg1), 
-.x0(output_wires[0]), 
+.x0(32'h0), 
 .x1(output_wires[1]), 
 .x2(output_wires[2]), 
 .x3(output_wires[3]), 
@@ -82,7 +79,7 @@ mux_32t1_32 read_sel_mux_1_(.sel(read_reg1),
 .x1F(output_wires[31]), 
 .q(read_data1));
 mux_32t1_32 read_sel_mux_2_(.sel(read_reg2), 
-.x0(output_wires[0]), 
+.x0(32'h0), 
 .x1(output_wires[1]), 
 .x2(output_wires[2]), 
 .x3(output_wires[3]), 
