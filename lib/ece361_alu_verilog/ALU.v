@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 module ALU(ctrl, A,B,shamt,cout,ovf,ze,R);
     input [2:0] ctrl;
     input [31:0] A;
