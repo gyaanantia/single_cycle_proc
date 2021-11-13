@@ -41,3 +41,5 @@ initial begin
 end
 
 always #5 clk = ~clk;
+
+endmodule // register_file_tb
