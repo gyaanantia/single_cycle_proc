@@ -28,7 +28,7 @@ dec_5 dec_(.src(write_reg), .z(decoder_out));
 genvar k;
 generate
     for (k = 0; k < 32; k = k + 1) begin
-        and_gate and_dec_we_(.x(write_enable), .y(decoder_out[k]), .(decoder_and_we[k]));
+        and_gate and_dec_we_(.x(write_enable), .y(decoder_out[k]), .z(decoder_and_we[k]));
     end
 endgenerate
 
@@ -47,11 +47,75 @@ assign output_wires[0] = 32'h0;
 
 // These two muxes handle selecting which registers we are reading from
 
-mux_32t1_32_arr read_sel_mux_1_(.sel(read_reg1), .in_arr(output_wires), .out(read_data1));
-mux_32t1_32_arr read_sel_mux_2_(.sel(read_reg2), .in_arr(output_wires), .out(read_data2));
+mux_32t1_32 read_sel_mux_1_(.sel(read_reg1), 
+.x0(output_wires[0]), 
+.x1(output_wires[1]), 
+.x2(output_wires[2]), 
+.x3(output_wires[3]), 
+.x4(output_wires[4]), 
+.x5(output_wires[5]), 
+.x6(output_wires[6]), 
+.x7(output_wires[7]), 
+.x8(output_wires[8]), 
+.x9(output_wires[9]), 
+.xA(output_wires[10]), 
+.xB(output_wires[11]), 
+.xC(output_wires[12]), 
+.xD(output_wires[13]), 
+.xE(output_wires[14]), 
+.xF(output_wires[15]), 
+.x10(output_wires[16]), 
+.x11(output_wires[17]), 
+.x12(output_wires[18]), 
+.x13(output_wires[19]), 
+.x14(output_wires[20]), 
+.x15(output_wires[21]), 
+.x16(output_wires[22]), 
+.x17(output_wires[23]), 
+.x18(output_wires[24]), 
+.x19(output_wires[25]), 
+.x1A(output_wires[26]), 
+.x1B(output_wires[27]), 
+.x1C(output_wires[28]), 
+.x1D(output_wires[29]), 
+.x1E(output_wires[30]), 
+.x1F(output_wires[31]), 
+.q(read_data1));
+mux_32t1_32 read_sel_mux_2_(.sel(read_reg2), 
+.x0(output_wires[0]), 
+.x1(output_wires[1]), 
+.x2(output_wires[2]), 
+.x3(output_wires[3]), 
+.x4(output_wires[4]), 
+.x5(output_wires[5]), 
+.x6(output_wires[6]), 
+.x7(output_wires[7]), 
+.x8(output_wires[8]), 
+.x9(output_wires[9]), 
+.xA(output_wires[10]), 
+.xB(output_wires[11]), 
+.xC(output_wires[12]), 
+.xD(output_wires[13]), 
+.xE(output_wires[14]), 
+.xF(output_wires[15]), 
+.x10(output_wires[16]), 
+.x11(output_wires[17]), 
+.x12(output_wires[18]), 
+.x13(output_wires[19]), 
+.x14(output_wires[20]), 
+.x15(output_wires[21]), 
+.x16(output_wires[22]), 
+.x17(output_wires[23]), 
+.x18(output_wires[24]), 
+.x19(output_wires[25]), 
+.x1A(output_wires[26]), 
+.x1B(output_wires[27]), 
+.x1C(output_wires[28]), 
+.x1D(output_wires[29]), 
+.x1E(output_wires[30]), 
+.x1F(output_wires[31]), 
+.q(read_data2));
 
 
 endmodule
-
-
 
