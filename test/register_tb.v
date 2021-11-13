@@ -30,9 +30,11 @@ module register_tb;
         write_enable = 0;
         data_in = 32'h87654321;
         #10;
-        areset = 1;
+        areset = 1;        
         #10
         areset = 0;
+        write_enable = 1;
+        #10
         aload = 1;
         #30
         $finish;
