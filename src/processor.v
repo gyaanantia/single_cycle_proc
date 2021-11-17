@@ -55,7 +55,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .areset(reset), 
         .aload(load_pc), 
         .adata(pc_start), //reloads initial value when aload asserted
-        .data_in(branch_mux_out), // debug; final output is pc_in
+        .data_in(branch_mux_out), // DEBUG; final output is branch_mux_out
         .write_enable(1'b1), // want to be able to write at end, always
         .data_out(pc_out) // debug; final value is pc_out
     );
@@ -78,8 +78,8 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .cs(1'b1), //always on
         .oe(MemRead),
         .we(MemWrite),
-        .addr(32'h00400020),// DEBUG - final value is alu_out
-        .din(32'h00000000), // DEBUG - final value is read_data_2
+        .addr(alu_out),// DEBUG - final value is alu_out
+        .din(read_data_2), // DEBUG - final value is read_data_2
         .dout(data_mem_out)
         );
 
@@ -103,7 +103,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .read_reg1(ins_mem_out[25:21]), 
         .read_reg2(ins_mem_out[20:16]), 
         .write_reg(mux_write_reg), //mux output
-        .write_data(32'h00000000), //DEBUG - final value is z
+        .write_data(z), //DEBUG - final value is z
         .write_enable(RegWrite), // from control 
         .read_data1(read_data_1), //DEBUG - final value is read_data_1
         .read_data2(read_data_2)  //DEBUG - final value is read_data_2
@@ -128,14 +128,14 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // mux for register output
     gac_mux_32 reg_out (
         .sel(ALUSrc),
-        .src0(32'h00000000), //DEBUG - final value is read_data_2
+        .src0(read_data_2), //DEBUG - final value is read_data_2
         .src1(ext_out),
         .z(mux_read_reg)
     );
 
     // the final mux at the end
     gac_mux_32 mux_out ( 
-        .sel(MemToReg),
+        .sel(MemtoReg),
         .src0(alu_result),
         .src1(data_mem_out),
         .z(z)
@@ -147,18 +147,19 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     );
 
     //control will go here - placeholder
-    // gac_control control (
-    // .in(ins_mem_out[31_26]),
-    // .RegDst(RegDst),
-    // .BranchCtrl(BranchCtrl),
-    // .MemRead(MemRead),
-    // .ALUOp(ALUOp),
-    // .MemWrite(MemWrite),
-    // .ALUSrc(ALUSrc),
-    // .RegWrite(RegWrite),
-    // .Bne(Bne),
-    // .Bgtz(Bgtz)
-    //  );
+    control_unit control(
+    .op_code(ins_mem_out[31:26]), 
+    .reg_dst(RegDst), 
+    .alu_src(ALUSrc), 
+    .mem_to_reg(MemtoReg), // 
+    .reg_write(RegWrite), 
+    .mem_read(MemRead), 
+    .mem_write(MemWrite), 
+    .alu_op(ALUOp), 
+    .beq(Beq), 
+    .bne(Bne), 
+    .bgtz(Bgtz)
+    );
 
     gac_and_gate and_1(
         .x(BranchCtrl),
@@ -166,30 +167,18 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .z(branch_mux_sel)
     );
 
-    fake_control fake_ctrl(
-        .in(ins_mem_out[31:26]), 
-        .ALUOp(ALUOp), 
-        .RegDst(RegDst), 
-        .BranchCtrl(BranchCtrl), 
-        .MemRead(MemRead),
-        .MemtoReg(MemtoReg),
-        .MemWrite(MemWrite),
-        .ALUSrc(ALUSrc),
-        .RegWrite(RegWrite),
-	    .Bne(Bne),
-        .Bgtz(Bgtz)
-        );
-
-    fake_control_alu fake_alu_ctrl(
-        .in(ALUOp), //from the instruction
-        .fakeALUout(alu_op_in)
+    alu_control_unit alu_control(
+        .inst(ins_mem_out[5:0]), 
+        .alu_op(ALUOp), 
+        .sel(alu_op_in)
     );
+
 
     ALU alu(
         .ctrl(alu_op_in), 
-        .A(32'h00000000), //DEBUG - final value is read_data_1
+        .A(read_data_1), //DEBUG - final value is read_data_1
         .B(mux_read_reg),
-        .shamt(gnd),
+        .shamt(ins_mem_out[15:11]),
         .cout(gnd),
         .ovf(gnd),
         .ze(alu_zero),
