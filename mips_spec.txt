@@ -51,7 +51,7 @@ beq: 	BEQ rs, rt, offset; 	if(rs = rt) then branch
 bne: 	BNE rs, rt, offset; 	if(rs != rt) then branch
 0 0 0 1 0 1 - rs[4:0] - rt[4:0] - offset[15:0]
 
-bgtz: 	BGTZ rs, offset; 	if(rs > 0) then branch
+bgtz: 	BGTZ rs, offset; 	if(rs > 0) then branch -- !(ZF or Reg[rs][31])
 0 0 0 1 1 1 - rs[4:0] - 0 0 0 0 0 - offset[15:0]
 
 slt: 	SLT rd, rs, rt; 	rd <-- (rs < rt)
