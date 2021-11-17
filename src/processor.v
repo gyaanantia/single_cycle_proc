@@ -27,13 +27,13 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
    
     // internal CONTROL wires:
     // ALU control wires
-    wire [1:0] alu_op_in; // check bit numbers
+    wire [2:0] alu_op_in; // check bit numbers
     wire [1:0] ALUOp;
     wire alu_zero;
    
     // CONTROL block single bit
     wire RegDst, 
-	 BranchCtrl, 
+	 Beq, 
 	 MemRead, 
 	 MemtoReg,
 	 MemWrite,
@@ -48,7 +48,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .areset(reset), 
         .aload(load_pc), 
         .adata(pc_start), //reloads initial value when aload asserted
-        .data_in(pc_start), // DEBUG; final output is branch_mux_out
+        .data_in(32'h00400034), // DEBUG; final output is branch_mux_out
         .write_enable(1'b1), // want to be able to write at end, always
         .data_out(pc_out) // debug; final value is pc_out
     );
@@ -71,7 +71,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .cs(1'b1), //always on
         .oe(MemRead),
         .we(MemWrite),
-        .addr(alu_result),// DEBUG - final value is alu_result
+        .addr(alu_result), // DEBUG - final value is alu_result
         .din(read_data_2), // DEBUG - final value is read_data_2
         .dout(data_mem_out)
         );
@@ -96,7 +96,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .read_reg1(ins_mem_out[25:21]), 
         .read_reg2(ins_mem_out[20:16]), 
         .write_reg(mux_write_reg), //mux output
-        .write_data(z), //DEBUG - final value is z
+        .write_data(32'h00000000), //DEBUG - final value is z
         .write_enable(RegWrite), // from control 
         .read_data1(read_data_1), //DEBUG - final value is read_data_1
         .read_data2(read_data_2)  //DEBUG - final value is read_data_2
@@ -139,7 +139,6 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .a_ext(ext_out)
     );
 
-    //control will go here - placeholder
     control_unit control(
     .op_code(ins_mem_out[31:26]), 
     .reg_dst(RegDst), 
@@ -155,7 +154,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     );
 
     gac_and_gate and_1(
-        .x(BranchCtrl),
+        .x(Beq),
         .y(alu_zero),
         .z(branch_mux_sel)
     );
