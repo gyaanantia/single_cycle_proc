@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 // Control unit PLA
 module control_unit(op_code, reg_dst, alu_src, mem_to_reg, reg_write, mem_read, mem_write, alu_op, beq, bne, bgtz);
 
