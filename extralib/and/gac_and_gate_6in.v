@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 // 6 input AND gate for the PLA
 module gac_and_gate_6in(a, b, c, d, e, f, z);
 

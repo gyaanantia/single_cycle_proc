@@ -5,6 +5,12 @@ module alu_control_unit_tb;
     reg [1:0] alu_op;
     wire [2:0] sel;
 
+    alu_control_unit tester(
+        inst,
+        alu_op,
+        sel
+    );
+
     initial begin
         // ADD
         inst = 6'b100000;

@@ -64,7 +64,7 @@ module alu_control_unit(inst, alu_op, sel);
 
     // SLTU
     wire sltu_, sltu_r;
-    gac_and_gate_6in sltu__(.a(inst[0]), .b(inst[1]), .c(not_inst[2]), .d(not_inst[3]), .e(not_inst[4]), .f(inst[5]), .z(sltu_));
+    gac_and_gate_6in sltu__(.a(inst[0]), .b(inst[1]), .c(not_inst[2]), .d(inst[3]), .e(not_inst[4]), .f(inst[5]), .z(sltu_));
     gac_and_gate sltu_r_(.x(sltu_), .y(r_type), .z(sltu_r));
 
     // ADDI

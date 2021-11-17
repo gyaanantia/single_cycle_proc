@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 module gac_and_gate_32 (x, y, z);
   input [31:0] x;
   input [31:0] y;

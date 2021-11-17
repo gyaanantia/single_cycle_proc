@@ -1,3 +1,4 @@
+`timescale 1ns/10ps
 module gac_dec_5 (src , z);
   parameter n=5;
   input [n-1:0] src;
