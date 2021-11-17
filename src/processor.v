@@ -10,11 +10,11 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     input clk, reset, load_pc;
     output wire [31:0] z;
     // internal DATA wires:
+    wire branch_mux_sel;
     wire [31:0] pc_out, 
 		add_1_out, 
 		add_2_out, 
 		branch_mux_out, 
-		branch_mux_sel,
 		ins_mem_out,
 		ins_31_26, 
 		ins_25_21, 
@@ -23,29 +23,31 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
 		ins_15_0, 
 		ins_5_0, 
 		ext_out,
-		mux_write_reg,
 		mux_read_reg,
 		read_data_1,
 		read_data_2,
-		alu_zero,
 		data_mem_out,
 		alu_result;
    
+    wire [4:0] 	mux_write_reg;
+   
+   
     // internal CONTROL wires:
+    // ALU control wires
     wire [1:0] alu_op_in; // check bit numbers
     wire [2:0] ALUOp;
-
+    wire alu_zero;
+   
+    // CONTROL block single bit
     wire RegDst, 
 	 BranchCtrl, 
 	 MemRead, 
 	 MemtoReg,
 	 MemWrite,
 	 ALUSrc,
-	 RegWrite; // single bit
-   
-    wire gnd; // keep this separate since it's just grounding everything
-
-    assign gnd = 1'b0;
+	 RegWrite,
+	 Bne,// addition to book diagram 
+	 Bgtz; // addition to book diagram
 
     //program counter
     register pc( // add a register to be the pc.
@@ -68,14 +70,16 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
             .dout(ins_mem_out) // read out the instruction
     );
 
+   //mymodule modulename(.zero_in(0));
+
     //data memory
     gac_syncram #(.mem_file("data/bills_branch.dat")) data_mem (
         .clk(clk),
         .cs(1'b1), //always on
-        .oe(mem_read),
-        .we(mem_write),
-        .addr(alu_result),
-        .din(read_data_2),
+        .oe(MemRead),
+        .we(MemWrite),
+        .addr(32'h00400020),// DEBUG - final value is alu_out
+        .din(32'h00000000), // DEBUG - final value is read_data_2
         .dout(data_mem_out)
         );
 
@@ -96,13 +100,13 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // register file
     register_file reg_file(
         .clk(clk), 
-        .read_reg1(ins_25_21), 
-        .read_reg2(ins_20_16), 
+        .read_reg1(ins_mem_out[25:21]), 
+        .read_reg2(ins_mem_out[20:16]), 
         .write_reg(mux_write_reg), //mux output
-        .write_data(z), //check this 
+        .write_data(32'h00000000), //DEBUG - final value is z
         .write_enable(RegWrite), // from control 
-        .read_data1(read_data_1), 
-        .read_data2(read_data_2)
+        .read_data1(read_data_1), //DEBUG - final value is read_data_1
+        .read_data2(read_data_2)  //DEBUG - final value is read_data_2
         );
     
     // mux for branch logic
@@ -114,17 +118,17 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     );
 
     // mux for register input
-    gac_mux_32 reg_in (
+    gac_mux_5 reg_in ( //this needs to be a 5-bit mux
         .sel(RegDst),
-        .src0(ins_20_16),
-        .src1(ins_15_11),
+        .src0(ins_mem_out[20:16]), // 32 vs 5 bits!
+        .src1(ins_mem_out[15:11]),
         .z(mux_write_reg)
     );
 
     // mux for register output
     gac_mux_32 reg_out (
         .sel(ALUSrc),
-        .src0(read_data_2),
+        .src0(32'h00000000), //DEBUG - final value is read_data_2
         .src1(ext_out),
         .z(mux_read_reg)
     );
@@ -138,30 +142,32 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     );
 
     sign_ext extender(
-        .a(ins_15_0),
+        .a(ins_mem_out[15:0]),
         .a_ext(ext_out)
     );
 
     //control will go here - placeholder
     // gac_control control (
-    // .in(ins_31_26),
-    // .RegDst(reg_dst),
-    // .Branch(branch),
-    // .MemRead(mem_read),
-    // .ALUOp(alu_op),
-    // .MemWrite(mem_write),
-    // .ALUSrc(alu_src),
-    // .RegWrite(reg_write)
+    // .in(ins_mem_out[31_26]),
+    // .RegDst(RegDst),
+    // .BranchCtrl(BranchCtrl),
+    // .MemRead(MemRead),
+    // .ALUOp(ALUOp),
+    // .MemWrite(MemWrite),
+    // .ALUSrc(ALUSrc),
+    // .RegWrite(RegWrite),
+    // .Bne(Bne),
+    // .Bgtz(Bgtz)
     //  );
 
-    gac_and_gate_32 and_1(
+    gac_and_gate and_1(
         .x(BranchCtrl),
         .y(alu_zero),
         .z(branch_mux_sel)
     );
 
     fake_control fake_ctrl(
-        .in(ins_31_26), 
+        .in(ins_mem_out[31:26]), 
         .ALUOp(ALUOp), 
         .RegDst(RegDst), 
         .BranchCtrl(BranchCtrl), 
@@ -169,7 +175,9 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .MemtoReg(MemtoReg),
         .MemWrite(MemWrite),
         .ALUSrc(ALUSrc),
-        .RegWrite(RegWrite)
+        .RegWrite(RegWrite),
+	    .Bne(Bne),
+        .Bgtz(Bgtz)
         );
 
     fake_control_alu fake_alu_ctrl(
@@ -179,7 +187,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
 
     ALU alu(
         .ctrl(alu_op_in), 
-        .A(read_data_1),
+        .A(32'h00000000), //DEBUG - final value is read_data_1
         .B(mux_read_reg),
         .shamt(gnd),
         .cout(gnd),

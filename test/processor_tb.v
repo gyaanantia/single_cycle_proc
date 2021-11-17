@@ -1,6 +1,6 @@
 `timescale 1ns/10ps
 
-module processor_tb_2;
+module processor_tb;
 
     reg clk_tb;
     reg reset_tb;
@@ -20,6 +20,8 @@ module processor_tb_2;
         #10
         load_pc_tb = 32'h00400020;
         reset_tb = 0;
+        #10
+        #10
         #10
         $finish;
 
