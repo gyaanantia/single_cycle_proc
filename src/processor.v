@@ -28,7 +28,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // internal CONTROL wires:
     // ALU control wires
     wire [1:0] alu_op_in; // check bit numbers
-    wire [2:0] ALUOp;
+    wire [1:0] ALUOp;
     wire alu_zero;
    
     // CONTROL block single bit
