@@ -86,7 +86,7 @@ module alu_control_unit(inst, alu_op, sel);
     wire slt_sltu;
     gac_or_gate or_sll_(.x(or_r), .y(sll_r), .z(or_sll));
     gac_or_gate slt_sltu_(.x(slt_r), .y(sltu_r), .z(slt_sltu));
-    gac_or_gate sel_0_(.x(or_sll), .y(slt_sltu), .z(sel[0]);
+    gac_or_gate sel_0_(.x(or_sll), .y(slt_sltu), .z(sel[0]));
 
 
     // sel[1]
