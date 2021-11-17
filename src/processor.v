@@ -71,7 +71,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .cs(1'b1), //always on
         .oe(MemRead),
         .we(MemWrite),
-        .addr(alu_out),// DEBUG - final value is alu_out
+        .addr(alu_result),// DEBUG - final value is alu_result
         .din(read_data_2), // DEBUG - final value is read_data_2
         .dout(data_mem_out)
         );
