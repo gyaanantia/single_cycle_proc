@@ -8,13 +8,14 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
     parameter pc_start = 32'h00400020; //this is what we are given for init
     input clk, reset, load_pc;
     output wire [31:0] z;
-    // data wires:
+    // DATA wires:
     wire [31:0] pc_out, add_1_out, add_2_out, branch_mux_out, ins_mem_out,
     ins_31_26, ins_25_21, ins_20_16, ins_15_11, ins_15_0, ins_5_0, ext_out,
     read_data_1, read_data_2, shift_left_2;
-    // control wires:
+    // CONTROL wires:
     wire [2:1] alu_op, alu_op_in; // check bit numbers
-    wire reg_dst, branch, mem_read, mem_to_reg, mem_write, alu_src, reg_write; // single bit
+    wire reg_dst, branch, mem_read, mem_to_reg, mem_write, 
+        alu_src, reg_write; // single bit
 
     //program counter
     register pc( // add a register to be the pc.
@@ -41,8 +42,8 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
     gac_syncram #(.mem_file("data/bills_branch.dat")) data_mem (
         .clk(clk),
         .cs(1'b1), //always on
-        .oe(),
-        .we(),
+        .oe(mem_read),
+        .we(mem_write),
         .addr(alu_result),
         .din(read_data_2),
         .dout()
@@ -67,7 +68,7 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .clk(.clk), 
         .read_reg1(ins_25_21), 
         .read_reg2(ins_20_16), 
-        .write_reg(), //mux output
+        .write_reg(write_reg), //mux output
         .write_data(z), //check this 
         .write_enable(reg_write), // from control 
         .read_data1(read_data1), 
@@ -76,11 +77,40 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
     
     // mux for branch logic
     gac_mux_32 branch_mux ( // the top one in the schematic
-        .sel(), 
-        .src0(), 
-        .src1(alu), 
+        .sel(), // and gate
+        .src0(add_1_out), 
+        .src1(add_2_out), 
         .z(branch_mux_out)
     )
+
+    // mux for register input
+    gac_mux_32 reg_in (
+        .sel(reg_dst),
+        .src0(ins_20_16),
+        .src1(ins_15_11),
+        .z(write_reg)
+    )
+
+    // mux for register output
+    gac_mux_32 reg_out (
+        .sel(alu_src),
+        .src0(read_data2),
+        .src1(ext_out),
+        .z(write_reg)
+    )
+
+    // the final mux at the end
+    gac_mux_32 mux_out ( 
+        .sel(mem_to_reg),
+        .src0(alu_result),
+        .src1(data_out),
+        .z()
+    )
+
+    module sign_ext(
+        .a(ins_15_0),
+        .a_ext(ext_out)
+        );
 
     //control will go here - placeholder
     // gac_control control (
@@ -93,6 +123,18 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // .ALUSrc(alu_src),
     // .RegWrite(reg_write)
     //  );
+
+    module gac_and_gate_32(
+        .x(branch),
+        .y(alu_zero),
+        .z(branch_mux_out)
+    );
+
+
+    //ALU
+
+    //ALU control
+
 
 
 

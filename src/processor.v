@@ -8,14 +8,38 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     parameter pc_start = 32'h00400020; //this is what we are given for init
     input clk, reset, load_pc;
     output wire [31:0] z;
-    // DATA wires:
-    wire [31:0] pc_out, add_1_out, add_2_out, branch_mux_out, branch_mux_sel,
-    ins_mem_out,ins_31_26, ins_25_21, ins_20_16, ins_15_11, ins_15_0, ins_5_0, ext_out,
-    read_data_1, read_data_2, shift_left_2;
-    // CONTROL wires:
-    wire [2:1] alu_op, alu_op_in; // check bit numbers
-    wire reg_dst, branch, mem_read, mem_to_reg, mem_write, 
-        alu_src, reg_write; // single bit
+    // internal DATA wires:
+    wire [31:0] pc_out, 
+		add_1_out, 
+		add_2_out, 
+		branch_mux_out, 
+		branch_mux_sel,
+		ins_mem_out,
+		ins_31_26, 
+		ins_25_21, 
+		ins_20_16, 
+		ins_15_11, 
+		ins_15_0, 
+		ins_5_0, 
+		ext_out,
+		read_data_1, 
+		read_data_2, 
+		shift_left_2, 
+		mux_reg_out;
+    // internal CONTROL wires:
+    wire [2:1] alu_op, 
+	       alu_op_in; // check bit numbers
+    wire reg_dst, 
+	 branch_ctrl, 
+	 mem_read, 
+	 mem_to_reg, 
+	 mem_write, 
+         alu_src, 
+	 reg_write; // single bit
+   
+    wire gnd; // keep this separate since it's just grounding everything
+
+    assign gnd = 1'b0;
 
     //program counter
     register pc( // add a register to be the pc.
@@ -23,7 +47,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .areset(reset), 
         .aload(load_pc), 
         .adata(pc_start), //reloads initial value when aload asserted
-        .data_in(pc_in), // debug; final output is pc_in
+        .data_in(branch_mux_out), // debug; final output is pc_in
         .write_enable(1'b1), // want to be able to write at end, always
         .data_out(pc_out) // debug; final value is pc_out
     );
@@ -64,8 +88,8 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         );
     
     // register file
-    register_file(
-        .clk(.clk), 
+    register_file reg_file(
+        .clk(clk), 
         .read_reg1(ins_25_21), 
         .read_reg2(ins_20_16), 
         .write_reg(write_reg), //mux output
@@ -81,7 +105,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .src0(add_1_out), 
         .src1(add_2_out), 
         .z(branch_mux_out)
-    )
+    );
 
     // mux for register input
     gac_mux_32 reg_in (
@@ -89,15 +113,15 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .src0(ins_20_16),
         .src1(ins_15_11),
         .z(write_reg)
-    )
+    );
 
     // mux for register output
     gac_mux_32 reg_out (
         .sel(alu_src),
         .src0(read_data2),
         .src1(ext_out),
-        .z(write_reg)
-    )
+        .z(mux_reg_out)
+    );
 
     // the final mux at the end
     gac_mux_32 mux_out ( 
@@ -105,12 +129,12 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .src0(alu_result),
         .src1(data_out),
         .z(z)
-    )
+    );
 
-    module sign_ext(
+    sign_ext extender(
         .a(ins_15_0),
         .a_ext(ext_out)
-        );
+    );
 
     //control will go here - placeholder
     // gac_control control (
@@ -124,20 +148,28 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // .RegWrite(reg_write)
     //  );
 
-    module gac_and_gate_32(
-        .x(branch),
+    gac_and_gate_32 and_1(
+        .x(branch_ctrl),
         .y(alu_zero),
         .z(branch_mux_sel)
     );
 
+    fake_control fake(
+        .in(alu_op),
+        .out(alu_op_in)
+    );
 
-    //ALU
-
-    //ALU control
-
-
-
-
+    ALU alu(
+        .ctrl(alu_op_in), 
+        .A(read_data_1),
+        .B(mux_),
+        .shamt(gnd),
+        .cout(gnd),
+        .ovf(gnd),
+        .ze(alu_zero),
+        .R(alu_result)
+        );
 
 endmodule
+
 
