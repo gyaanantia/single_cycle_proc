@@ -16,12 +16,12 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
 		add_2_out, 
 		branch_mux_out, 
 		ins_mem_out,
-		ins_31_26, 
-		ins_25_21, 
-		ins_20_16, 
-		ins_15_11, 
-		ins_15_0, 
-		ins_5_0, 
+		//ins_31_26, 
+		//ins_25_21, 
+		//ins_20_16, 
+		//ins_15_11, 
+		//ins_15_0, 
+		//ins_5_0, 
 		ext_out,
 		mux_read_reg,
 		read_data_1,
@@ -55,7 +55,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .areset(reset), 
         .aload(load_pc), 
         .adata(pc_start), //reloads initial value when aload asserted
-        .data_in(branch_mux_out), // DEBUG; final output is branch_mux_out
+        .data_in(load_pc), // DEBUG; final output is branch_mux_out
         .write_enable(1'b1), // want to be able to write at end, always
         .data_out(pc_out) // debug; final value is pc_out
     );

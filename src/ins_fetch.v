@@ -22,7 +22,7 @@ module ins_fetch(clk, reset, load_pc, z); //input: pc counter value; output: ins
         .data_out(pc_out) // debug; final value is pc_out
     );
 
-    sram #(.mem_file("data/bills_branch.dat")) ins_mem( // the instruction mem will be sram, no clock.
+    gac_sram #(.mem_file("data/bills_branch.dat")) ins_mem( // the instruction mem will be sram, no clock.
             .cs(1'b1), // always enable ops
             .oe(1'b1), // always read the ins mem
             .we(1'b0), // never write the ins mem 
