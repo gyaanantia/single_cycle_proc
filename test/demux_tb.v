@@ -24,6 +24,8 @@ initial begin
             #5
             S = 5'b00001;
             D = 32'hffffffff;
+            #5
+            $finish;
             
 end
 
