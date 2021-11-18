@@ -66,8 +66,17 @@ module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value;
    //mymodule modulename(.zero_in(0));
 
     //data memory
-    gac_syncram #(.mem_file("data/bills_branch.dat")) data_mem (
-        .clk(clk),
+    // gac_syncram #(.mem_file("data/bills_branch.dat")) data_mem (
+    //     .clk(clk),
+    //     .cs(1'b1), //always on
+    //     .oe(MemRead),
+    //     .we(MemWrite),
+    //     .addr(alu_result), // DEBUG - final value is alu_result
+    //     .din(read_data_2), // DEBUG - final value is read_data_2
+    //     .dout(data_mem_out)
+    //     );
+
+    gac_sram #(.mem_file("data/bills_branch.dat")) data_mem (
         .cs(1'b1), //always on
         .oe(MemRead),
         .we(MemWrite),
@@ -173,7 +182,7 @@ module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value;
         .ctrl(alu_op_in), 
         .A(read_data_1), //DEBUG - final value is read_data_1
         .B(mux_read_reg),
-        .shamt(ins_mem_out[15:11]),
+        .shamt(ins_mem_out[10:6]),
         .cout(gnd),
         .ovf(gnd),
         .ze(alu_zero),

@@ -25,7 +25,7 @@ module processor_tb;
         #10
         load_pc_tb = 0;
         #10
-        #500
+        #5000
         $finish;
 
 
