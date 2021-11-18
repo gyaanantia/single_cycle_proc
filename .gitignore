@@ -4,3 +4,5 @@ xcelium.d
 xrun.history
 xrun.key
 xrun.log
+.DS_Store
+broken/*
