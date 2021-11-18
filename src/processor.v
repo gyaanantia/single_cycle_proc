@@ -6,7 +6,7 @@ module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value;
 
     //signals
     parameter pc_start = 32'h00400020; //this is what we are given for init
-    parameter mem_file = "data/bills_branch.dat";
+    parameter memory_file = "data/bills_branch.dat";
     input clk, reset, load_pc;
     output wire [31:0] z, alu_result;
     // internal DATA wires:
@@ -54,7 +54,7 @@ module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value;
     );
 
     //instruction memory
-    gac_sram #(.mem_file("data/bills_branch.dat")) ins_mem( // the instruction mem will be sram, no clock.
+    gac_sram #(.mem_file(memory_file)) ins_mem( // the instruction mem will be sram, no clock.
             .cs(1'b1), // always enable ops
             .oe(1'b1), // always read the ins mem
             .we(1'b0), // never write the ins mem 
@@ -76,7 +76,7 @@ module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value;
     //     .dout(data_mem_out)
     //     );
 
-    gac_sram #(.mem_file("data/bills_branch.dat")) data_mem (
+    gac_sram #(.mem_file(memory_file)) data_mem (
         .cs(1'b1), //always on
         .oe(MemRead),
         .we(MemWrite),

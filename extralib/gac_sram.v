@@ -2,7 +2,7 @@
 
 module gac_sram(cs,oe,we,addr,din,dout);
   
-  parameter mem_file = "data/bills_branch.dat";
+  parameter mem_file;
   //parameter mem_file;
   input cs;
   input oe;
