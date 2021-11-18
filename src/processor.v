@@ -93,6 +93,7 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
     // register file
     register_file reg_file(
         .clk(clk), 
+        .reset(reset),
         .read_reg1(ins_mem_out[25:21]), 
         .read_reg2(ins_mem_out[20:16]), 
         .write_reg(mux_write_reg), //mux output

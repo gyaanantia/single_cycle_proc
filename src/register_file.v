@@ -1,10 +1,10 @@
 // 32 of the 32-bit registers
 
-module register_file(clk, read_reg1, read_reg2, write_reg, write_data, write_enable, read_data1, read_data2);
+module register_file(clk, reset, read_reg1, read_reg2, write_reg, write_data, write_enable, read_data1, read_data2);
 
 input [4:0] read_reg1, read_reg2, write_reg;
 input [31:0] write_data;
-input clk, write_enable;
+input clk, reset, write_enable;
 output wire [31:0] read_data1, read_data2;
 
 // Wires coming out of each register, to be passed to the mux
@@ -37,7 +37,7 @@ endgenerate
 genvar i;
 generate
     for (i = 0; i < 32; i = i + 1) begin
-        register reg_(.clk(clk), .areset(1'b0), .aload(1'b0), .adata(32'b0), .data_in(write_data), .write_enable(decoder_and_we[i]), .data_out(output_wires[i]));
+        register reg_(.clk(clk), .areset(reset), .aload(1'b0), .adata(32'b0), .data_in(write_data), .write_enable(decoder_and_we[i]), .data_out(output_wires[i]));
     end
 endgenerate
 
