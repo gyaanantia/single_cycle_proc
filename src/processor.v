@@ -2,13 +2,13 @@
 
 // AD first attempt at processor.  P. 255 in text.
 
-module processor(clk, reset, load_pc, z); //input: pc counter value; output: instruction
+module processor(clk, reset, load_pc, z, alu_result); //input: pc counter value; output: instruction
 
     //signals
     parameter pc_start = 32'h00400020; //this is what we are given for init
     parameter mem_file = "data/bills_branch.dat";
     input clk, reset, load_pc;
-    output wire [31:0] z;
+    output wire [31:0] z, alu_result;
     // internal DATA wires:
     wire branch_mux_sel;
     wire [31:0] pc_out, 
@@ -20,8 +20,8 @@ module processor(clk, reset, load_pc, z); //input: pc counter value; output: ins
 		mux_read_reg,
 		read_data_1,
 		read_data_2,
-		data_mem_out,
-		alu_result;
+		data_mem_out;
+		//alu_result;
    
     wire [4:0] 	mux_write_reg;
    

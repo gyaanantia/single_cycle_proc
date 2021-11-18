@@ -6,12 +6,14 @@ module processor_tb;
     reg reset_tb;
     reg load_pc_tb;
     wire [31:0] z_tb;
+    wire [31:0] alu_result_tb; // add alu_result for slt
 
     processor test(
         .clk(clk_tb),
         .reset(reset_tb),
         .load_pc(load_pc_tb),
-        .z(z_tb)
+        .z(z_tb),
+        .alu_result(alu_result_tb)
     );
 
     initial begin
